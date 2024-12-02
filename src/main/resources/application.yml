@@ -1,0 +1,23 @@
+##spring.application.name=diary-tasks-tracker-api
+
+server:
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/tasks-tracker
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+
