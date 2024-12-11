@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Table(name = "task_state")
@@ -38,7 +39,7 @@ public class TaskStateEntity {
 
     @Builder.Default
     @OneToMany
-    @JoinColumn(name = "task_state_id", referencedColumnName = "id")
+    @JoinColumn(name = "task_state_entity_id", referencedColumnName = "id")
     List<TaskEntity> tasks = new ArrayList<>();
 
     public Optional<TaskStateEntity> getLeftTaskState(){

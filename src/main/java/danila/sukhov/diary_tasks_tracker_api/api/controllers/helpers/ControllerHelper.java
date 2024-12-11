@@ -2,7 +2,11 @@ package danila.sukhov.diary_tasks_tracker_api.api.controllers.helpers;
 
 import danila.sukhov.diary_tasks_tracker_api.api.exceptions.NotFoundException;
 import danila.sukhov.diary_tasks_tracker_api.store.entities.ProjectEntity;
+import danila.sukhov.diary_tasks_tracker_api.store.entities.TaskEntity;
+import danila.sukhov.diary_tasks_tracker_api.store.entities.TaskStateEntity;
 import danila.sukhov.diary_tasks_tracker_api.store.repositories.ProjectRepository;
+import danila.sukhov.diary_tasks_tracker_api.store.repositories.TaskRepository;
+import danila.sukhov.diary_tasks_tracker_api.store.repositories.TaskStateRepository;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +19,8 @@ import org.springframework.stereotype.Component;
 @Transactional
 public class ControllerHelper {
     ProjectRepository projectRepository;
+    TaskStateRepository taskStateRepository;
+    TaskRepository taskRepository;
     public ProjectEntity getProjectOrThrowException(Long projectId) {
         return projectRepository
                 .findById(projectId)
@@ -22,5 +28,19 @@ public class ControllerHelper {
                         String.format("Name not found", projectId))
                 );
 
+    }
+
+    public TaskStateEntity getTaskStateOrThrowException(Long taskStateId){
+        return  taskStateRepository.
+                findById(taskStateId)
+                .orElseThrow(() -> new NotFoundException(
+                        String.format("Task state not found", taskStateId))
+                );
+    }
+
+    public TaskEntity getTaskOrThrowException(Long taskId){
+        return  taskRepository.findById(taskId).orElseThrow(() -> new NotFoundException(
+                String.format("Task not found", taskId))
+        );
     }
 }

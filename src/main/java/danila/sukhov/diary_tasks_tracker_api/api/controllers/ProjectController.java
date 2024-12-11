@@ -33,11 +33,11 @@ public class ProjectController {
     ControllerHelper controllerHelper;
 
     //Посмотреть именование эндпоинтов
-    public static final String FETCH_PROJECT = "api/projects/fetch";
-    public static final String CREATE_PROJECT = "api/projects/create";
-    public static final String UPDATE_PROJECT = "api/project/update/{project_id}";
-    public static final String CREATE_OR_UPDATE_PROJECT = "api/projects/create-or-update";
-    public static final String DELETE_PROJECT = "api/project/delete/{project_id}";
+    public static final String FETCH_PROJECT = "projects/fetch";
+    public static final String CREATE_PROJECT = "projects/create";
+    public static final String UPDATE_PROJECT = "project/update/{project_id}";
+    public static final String CREATE_OR_UPDATE_PROJECT = "projects/create-or-update";
+    public static final String DELETE_PROJECT = "project/delete/{project_id}";
 
     @GetMapping(FETCH_PROJECT)
     public List<ProjectDTO> fetchProject(

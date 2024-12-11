@@ -8,9 +8,18 @@ server:
 
 logging:
   level:
-    org.springframework.web: DEBUG
+    org:
+      springframework:
+        security: DEBUG
+        web: DEBUG
 
 spring:
+  application:
+    name: task-tracker-service
+    cloud:
+      discovery:
+        client:
+          simple: false
   datasource:
     url: jdbc:postgresql://localhost/tasks-tracker
     username: postgres
@@ -18,6 +27,27 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: task-tracker-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest # Для получения всех существующих сообщений
+    listener:
+      missing-topics-fatal: false
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ # URL Eureka-сервера
+    register-with-eureka: true # Регистрация сервиса
+    fetch-registry: true # Получение реестра других сервисов
+  instance:
+    prefer-ip-address: true # Использовать IP вместо hostname
+
+jwt:
+  secret: TWVnYUxhcmdlU2lnbmluZ1NlY3JldEtleUZvckF1dGhTZXJ2aWNlTWVnYUxhcmdlU2lnbmluZ1NlY3JldEtleUZvclRhc2tUcmFja2VyU2VydmljZQ==
+  expiration:  86400000
 

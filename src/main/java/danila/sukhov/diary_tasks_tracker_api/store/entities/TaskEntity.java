@@ -21,10 +21,16 @@ public class TaskEntity {
 
     String name;
 
-    Long ordinal;
+    String priority;
 
     @Builder.Default
     Instant createdAt = Instant.now();
+
+    @ManyToOne
+    TaskStateEntity taskStateEntity;
+
+    @ManyToOne
+    UserEntity userEntity;
 
     String description;
 }

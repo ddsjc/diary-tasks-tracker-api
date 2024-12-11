@@ -32,10 +32,10 @@ public class TaskStateController {
 
     ControllerHelper controllerHelper;
 
-    public static final String GET_TASK_STATES = "api/projects/fetch/{project_id}/task-states";
-    public static final String CREATE_TASK_STATE = "api/projects/create/{project_id}/task-states";
-    public static final String UPDATE_TASK_STATE = "api/task-state/{task_state_id}";
-    public static final String CHANGE_TASK_STATE_POSITION = "api/task-state/{task_state_id}/position/change";
+    public static final String GET_TASK_STATES = "projects/fetch/{project_id}/task-states";
+    public static final String CREATE_TASK_STATE = "projects/create/{project_id}/task-states";
+    public static final String UPDATE_TASK_STATE = "task-state/{task_state_id}";
+    public static final String CHANGE_TASK_STATE_POSITION = "task-state/{task_state_id}/position/change";
 
     @GetMapping(GET_TASK_STATES)
     public List<TaskStateDTO> getTaskStates(@PathVariable(name = "project_id") Long project_id){

@@ -1,28 +1,32 @@
 package danila.sukhov.diary_tasks_tracker_api.api.dtos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TaskDTO {
+public class UserRegistrationDTO {
 
-    @NonNull
+    Long id;
+
     String name;
 
-    @NonNull
-    String priority;
+    String surname;
 
-    @Builder.Default
+    String login;
+
+    String password;
+
     Instant createdAt = Instant.now();
 
-    @NonNull
-    String description;
+    Set<String> roles;
 }
