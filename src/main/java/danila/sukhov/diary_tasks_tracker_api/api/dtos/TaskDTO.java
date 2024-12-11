@@ -13,6 +13,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TaskDTO {
+    Long id;
 
     @NonNull
     String name;

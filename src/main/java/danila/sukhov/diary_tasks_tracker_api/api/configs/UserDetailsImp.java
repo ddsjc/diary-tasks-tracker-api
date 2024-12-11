@@ -45,6 +45,8 @@ public class UserDetailsImp implements UserDetails {
                 user.getPassword(),
                 authorities);
     }
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

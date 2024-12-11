@@ -3,6 +3,7 @@ package danila.sukhov.diary_tasks_tracker_api.store.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.apache.catalina.User;
 
 import java.time.Instant;
 
@@ -33,4 +34,5 @@ public class TaskEntity {
     UserEntity userEntity;
 
     String description;
+
 }

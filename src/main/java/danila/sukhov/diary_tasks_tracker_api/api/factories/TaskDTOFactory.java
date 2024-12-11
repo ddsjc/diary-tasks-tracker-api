@@ -9,6 +9,7 @@ public class TaskDTOFactory {
 
     public TaskDTO createTaskDTO(TaskEntity taskEntity){
         return TaskDTO.builder()
+                .id(taskEntity.getId())
                 .name(taskEntity.getName())
                 .createdAt(taskEntity.getCreatedAt())
                 .description(taskEntity.getDescription())

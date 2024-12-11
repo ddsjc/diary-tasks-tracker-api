@@ -43,4 +43,7 @@ public class UserEntity {
     @OneToMany
     @JoinColumn(name = "user_entity_id", referencedColumnName = "id")
     List<TaskEntity> tasks = new ArrayList<>();
+
+
+
 }
