@@ -1,5 +1,6 @@
 package danila.sukhov.diary_tasks_tracker_api.store.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -36,4 +37,7 @@ public class ProjectEntity {
     @JoinColumn(name = "project_id", referencedColumnName = "id")
     List<TaskStateEntity> taskStates = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "projects")
+    @JsonBackReference
+    Set<UserEntity> users;
 }

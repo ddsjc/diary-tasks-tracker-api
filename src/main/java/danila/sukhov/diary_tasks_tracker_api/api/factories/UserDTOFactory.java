@@ -14,6 +14,7 @@ public class UserDTOFactory {
                 .login(user.getLogin())
                 .password(user.getPassword())
                 .role(user.getRole())
+                .projects(user.getProjects())
                 .build();
     }
 }

@@ -2,18 +2,24 @@ package danila.sukhov.diary_tasks_tracker_api.api.controllers;
 
 import danila.sukhov.diary_tasks_tracker_api.api.controllers.helpers.ControllerHelper;
 import danila.sukhov.diary_tasks_tracker_api.api.dtos.AskDTO;
+import danila.sukhov.diary_tasks_tracker_api.api.dtos.MessageResponce;
 import danila.sukhov.diary_tasks_tracker_api.api.dtos.ProjectDTO;
 import danila.sukhov.diary_tasks_tracker_api.api.exceptions.BadRequestException;
 import danila.sukhov.diary_tasks_tracker_api.api.exceptions.NotFoundException;
 import danila.sukhov.diary_tasks_tracker_api.api.factories.ProjectDTOFactory;
 import danila.sukhov.diary_tasks_tracker_api.store.entities.ProjectEntity;
+import danila.sukhov.diary_tasks_tracker_api.store.entities.UserEntity;
 import danila.sukhov.diary_tasks_tracker_api.store.repositories.ProjectRepository;
+import danila.sukhov.diary_tasks_tracker_api.store.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,12 +38,15 @@ public class ProjectController {
 
     ControllerHelper controllerHelper;
 
+    UserRepository userRepository;
+
     //Посмотреть именование эндпоинтов
     public static final String FETCH_PROJECT = "projects/fetch";
     public static final String CREATE_PROJECT = "projects/create";
     public static final String UPDATE_PROJECT = "project/update/{project_id}";
     public static final String CREATE_OR_UPDATE_PROJECT = "projects/create-or-update";
     public static final String DELETE_PROJECT = "project/delete/{project_id}";
+    public static final String ADDED_USER_IN_PROJECT = "project/add-user/{project_id}";
 
     @GetMapping(FETCH_PROJECT)
     public List<ProjectDTO> fetchProject(
@@ -51,13 +60,60 @@ public class ProjectController {
 
         return projectEntityStream.map(projectDTOFactory::createProjectDto).collect(Collectors.toList());
     }
+@PatchMapping(ADDED_USER_IN_PROJECT )
+public MessageResponce addUserInProject(@PathVariable(value = "project_id") Long projectId , @RequestParam(value = "user_name") String userName){
+        if(userName.trim().isEmpty()){
+            throw new BadRequestException(String.format("Invalid projectName of project : ", userName));
+        }
 
-    @PostMapping(CREATE_PROJECT)
+        UserEntity user = controllerHelper.getUserOrThrowExceptiom(userName);
+        ProjectEntity project = controllerHelper.getProjectOrThrowException(projectId);
+
+        project.getUsers().add(user);
+        user.getProjects().add(project);
+
+        userRepository.save(user);
+        projectRepository.save(project);
+
+        return new MessageResponce("User " + userName + " successfully added in project " + projectId);
+}
+
+@PostMapping(CREATE_PROJECT)
+public ProjectDTO createProject(@RequestParam(value = "project_name") String projectName, @AuthenticationPrincipal UserDetails userDetails){
+
+    if(projectName.trim().isEmpty()){
+        throw new BadRequestException(String.format("Invalid projectName of project : ", projectName));
+    }
+
+    UserEntity user = controllerHelper.getUserOrThrowExceptiom(userDetails.getUsername());
+    HashSet<UserEntity> userSet = new HashSet<>();
+    userSet.add(user);
+
+    projectRepository.findByName(projectName)
+            .ifPresent(project -> {
+                throw new BadRequestException(String.format("Such a projectName \"%s\" already exists", projectName));
+            });
+
+    ProjectEntity project = projectRepository.saveAndFlush(
+            ProjectEntity.builder()
+                    .name(projectName)
+                    .users(userSet)
+                    .build()
+    );
+
+    user.getProjects().add(project);
+    userRepository.save(user);
+
+    return projectDTOFactory.createProjectDto(project);
+}
+
+   /* @PostMapping(CREATE_PROJECT)
     public ProjectDTO createProject(@RequestParam(value = "project_name") String projectName){
 
         if(projectName.trim().isEmpty()){
             throw new BadRequestException(String.format("Invalid projectName of project : ", projectName));
         }
+
 
         projectRepository.findByName(projectName)
                 .ifPresent(project -> {
@@ -71,7 +127,7 @@ public class ProjectController {
         );
 
         return projectDTOFactory.createProjectDto(project);
-    }
+    }*/
 
 
     @PatchMapping(UPDATE_PROJECT)

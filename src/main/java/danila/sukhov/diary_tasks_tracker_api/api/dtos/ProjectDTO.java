@@ -1,10 +1,12 @@
 package danila.sukhov.diary_tasks_tracker_api.api.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import danila.sukhov.diary_tasks_tracker_api.store.entities.UserEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.util.Set;
 
 @Data
 @Builder
@@ -21,4 +23,6 @@ public class ProjectDTO {
     @NonNull
     @JsonProperty("created_at")
     Instant createdAt;
+
+    Set<UserEntity> users;
 }

@@ -15,6 +15,7 @@ public class ProjectDTOFactory {
                 .id(projectEntity.getId())
                 .name(projectEntity.getName())
                 .createdAt(projectEntity.getCreatedAt())
+                .users(projectEntity.getUsers())
                 .build();
     }
 }
