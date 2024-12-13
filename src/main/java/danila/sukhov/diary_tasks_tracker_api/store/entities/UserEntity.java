@@ -54,5 +54,7 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "project_id"))
     Set<ProjectEntity> projects;
 
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<CommentEntity> comments;
 }

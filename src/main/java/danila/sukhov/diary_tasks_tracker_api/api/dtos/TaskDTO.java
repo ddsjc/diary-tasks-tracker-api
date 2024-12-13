@@ -1,11 +1,13 @@
 package danila.sukhov.diary_tasks_tracker_api.api.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import danila.sukhov.diary_tasks_tracker_api.store.entities.CommentEntity;
 import jakarta.persistence.Column;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.util.Set;
 
 @Data
 @Builder
@@ -26,4 +28,6 @@ public class TaskDTO {
 
     @NonNull
     String description;
+
+    Set<CommentEntity> comments;
 }

@@ -4,40 +4,36 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.apache.catalina.User;
 
 import java.time.Instant;
-import java.util.Set;
+import java.util.Optional;
 
 @Entity
-@Table(name = "task")
+@Table(name = "comments")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class TaskEntity {
+public class CommentEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Long id;
 
-    String name;
+    String topic;
 
-    String priority;
+    String description;
 
     @Builder.Default
     Instant createdAt = Instant.now();
 
     @ManyToOne
-    TaskStateEntity taskStateEntity;
+    @JoinColumn(name = "user_id", nullable = false)
+    UserEntity user;
 
     @ManyToOne
-    UserEntity userEntity;
-
-    String description;
-
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    Set<CommentEntity> comments;
+    @JoinColumn(name = "task_id", nullable = false)
+    TaskEntity task;
 }

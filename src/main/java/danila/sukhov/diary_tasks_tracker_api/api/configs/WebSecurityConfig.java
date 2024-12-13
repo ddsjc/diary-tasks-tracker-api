@@ -36,8 +36,8 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Отключаем CSRF (если API работает без форм)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/project/**", "/projects/**", "task-state/**", "task/add-executor/**", "task/create/**").hasAuthority("ADMIN") // Только для админов
-                        .requestMatchers("/task/change/**").hasAuthority("EXECUTOR")// Доступ для эндпоинтов аутентификации
+                        .requestMatchers("/project/**", "/projects/**", "task-state/**", "task/add-executor/**", "task/create/**", "/task/add-comment/**").hasAuthority("ADMIN") // Только для админов
+                        .requestMatchers("/task/change/**" , "/task/add-comment/**" ).hasAuthority("EXECUTOR")// Доступ для эндпоинтов аутентификации
                         .anyRequest().authenticated() // Остальные запросы требуют авторизации
                 )
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class); // Добавляем кастомный JWT фильтр перед UsernamePasswordAuthenticationFilter

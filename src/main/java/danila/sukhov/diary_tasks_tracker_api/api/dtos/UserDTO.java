@@ -1,5 +1,6 @@
 package danila.sukhov.diary_tasks_tracker_api.api.dtos;
 
+import danila.sukhov.diary_tasks_tracker_api.store.entities.CommentEntity;
 import danila.sukhov.diary_tasks_tracker_api.store.entities.ProjectEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -35,4 +36,8 @@ public class UserDTO {
     String role;
 
     Set<ProjectEntity> projects;
+
+    Set<CommentDTO> comments;
+
+    Set<CutCommentsDTO> cutComments;
 }

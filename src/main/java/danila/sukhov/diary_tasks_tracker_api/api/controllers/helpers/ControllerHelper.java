@@ -1,18 +1,13 @@
 package danila.sukhov.diary_tasks_tracker_api.api.controllers.helpers;
 
 import danila.sukhov.diary_tasks_tracker_api.api.exceptions.NotFoundException;
-import danila.sukhov.diary_tasks_tracker_api.store.entities.ProjectEntity;
-import danila.sukhov.diary_tasks_tracker_api.store.entities.TaskEntity;
-import danila.sukhov.diary_tasks_tracker_api.store.entities.TaskStateEntity;
-import danila.sukhov.diary_tasks_tracker_api.store.entities.UserEntity;
-import danila.sukhov.diary_tasks_tracker_api.store.repositories.ProjectRepository;
-import danila.sukhov.diary_tasks_tracker_api.store.repositories.TaskRepository;
-import danila.sukhov.diary_tasks_tracker_api.store.repositories.TaskStateRepository;
-import danila.sukhov.diary_tasks_tracker_api.store.repositories.UserRepository;
+import danila.sukhov.diary_tasks_tracker_api.store.entities.*;
+import danila.sukhov.diary_tasks_tracker_api.store.repositories.*;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -20,10 +15,16 @@ import org.springframework.stereotype.Component;
 @Component
 @Transactional
 public class ControllerHelper {
+    @Autowired
     ProjectRepository projectRepository;
+    @Autowired
     TaskStateRepository taskStateRepository;
+    @Autowired
     TaskRepository taskRepository;
+    @Autowired
     UserRepository userRepository;
+    @Autowired
+    CommentsRepository commentsRepository;
     public ProjectEntity getProjectOrThrowException(Long projectId) {
         return projectRepository
                 .findById(projectId)
@@ -49,6 +50,12 @@ public class ControllerHelper {
     public UserEntity getUserOrThrowExceptiom(String userName){
         return  userRepository.findByLogin(userName).findAny().orElseThrow(() -> new NotFoundException(
                 String.format("User is not found", userName))
+        );
+    }
+
+    public CommentEntity getCommentOrThrowException(Long commentId){
+        return commentsRepository.findById(commentId).orElseThrow(() -> new NotFoundException(
+                String.format("Comment is not found", commentId))
         );
     }
 }

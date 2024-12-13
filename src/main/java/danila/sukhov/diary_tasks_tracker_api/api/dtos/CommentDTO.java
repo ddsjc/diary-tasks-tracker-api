@@ -1,28 +1,32 @@
 package danila.sukhov.diary_tasks_tracker_api.api.dtos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import danila.sukhov.diary_tasks_tracker_api.store.entities.TaskEntity;
 import danila.sukhov.diary_tasks_tracker_api.store.entities.UserEntity;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
-import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProjectDTO {
-    @NonNull
-    Long id;
+public class CommentDTO {
+
+
+    String topic;
 
     @NonNull
-    String name;
+    String description;
 
     @NonNull
-    @JsonProperty("created_at")
     Instant createdAt;
 
-    Set<UserDTO> users;
+    @NonNull
+    UserEntity user;
+
+    @NonNull
+    TaskEntity task;
 }

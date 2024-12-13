@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +33,13 @@ import java.util.stream.Stream;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProjectController {
 
+    @Autowired
     ProjectDTOFactory projectDTOFactory;
-
+    @Autowired
     ProjectRepository projectRepository;
-
+    @Autowired
     ControllerHelper controllerHelper;
-
+    @Autowired
     UserRepository userRepository;
 
     //Посмотреть именование эндпоинтов
@@ -106,28 +108,6 @@ public ProjectDTO createProject(@RequestParam(value = "project_name") String pro
 
     return projectDTOFactory.createProjectDto(project);
 }
-
-   /* @PostMapping(CREATE_PROJECT)
-    public ProjectDTO createProject(@RequestParam(value = "project_name") String projectName){
-
-        if(projectName.trim().isEmpty()){
-            throw new BadRequestException(String.format("Invalid projectName of project : ", projectName));
-        }
-
-
-        projectRepository.findByName(projectName)
-                .ifPresent(project -> {
-                    throw new BadRequestException(String.format("Such a projectName \"%s\" already exists", projectName));
-                });
-
-        ProjectEntity project = projectRepository.saveAndFlush(
-                ProjectEntity.builder()
-                            .name(projectName)
-                            .build()
-        );
-
-        return projectDTOFactory.createProjectDto(project);
-    }*/
 
 
     @PatchMapping(UPDATE_PROJECT)

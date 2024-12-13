@@ -14,6 +14,7 @@ public class TaskDTOFactory {
                 .createdAt(taskEntity.getCreatedAt())
                 .description(taskEntity.getDescription())
                 .priority(taskEntity.getPriority())
+                .comments(taskEntity.getComments())
                 .build();
     }
 }
