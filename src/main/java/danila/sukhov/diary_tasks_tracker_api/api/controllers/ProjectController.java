@@ -2,6 +2,7 @@ package danila.sukhov.diary_tasks_tracker_api.api.controllers;
 
 import danila.sukhov.diary_tasks_tracker_api.api.controllers.helpers.ControllerHelper;
 import danila.sukhov.diary_tasks_tracker_api.api.dtos.AskDTO;
+import danila.sukhov.diary_tasks_tracker_api.api.dtos.CutProjectDTO;
 import danila.sukhov.diary_tasks_tracker_api.api.dtos.MessageResponce;
 import danila.sukhov.diary_tasks_tracker_api.api.dtos.ProjectDTO;
 import danila.sukhov.diary_tasks_tracker_api.api.exceptions.BadRequestException;
@@ -49,6 +50,7 @@ public class ProjectController {
     public static final String CREATE_OR_UPDATE_PROJECT = "projects/create-or-update";
     public static final String DELETE_PROJECT = "project/delete/{project_id}";
     public static final String ADDED_USER_IN_PROJECT = "project/add-user/{project_id}";
+    public static final String GET_PROJECT_OF_USER = "project/get-projects";
 
     @GetMapping(FETCH_PROJECT)
     public List<ProjectDTO> fetchProject(
@@ -62,6 +64,13 @@ public class ProjectController {
 
         return projectEntityStream.map(projectDTOFactory::createProjectDto).collect(Collectors.toList());
     }
+
+    @GetMapping(GET_PROJECT_OF_USER)
+    public List<CutProjectDTO> getUserProjects(@AuthenticationPrincipal UserDetails userDetails){
+        UserEntity user = controllerHelper.getUserOrThrowExceptiom(userDetails.getUsername());
+        return user.getProjects().stream().map(projectDTOFactory::createCutProjectDto).collect(Collectors.toList());
+    }
+
 @PatchMapping(ADDED_USER_IN_PROJECT )
 public MessageResponce addUserInProject(@PathVariable(value = "project_id") Long projectId , @RequestParam(value = "user_name") String userName){
         if(userName.trim().isEmpty()){

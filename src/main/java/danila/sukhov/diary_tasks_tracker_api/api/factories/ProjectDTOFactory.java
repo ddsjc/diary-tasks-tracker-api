@@ -1,5 +1,6 @@
 package danila.sukhov.diary_tasks_tracker_api.api.factories;
 
+import danila.sukhov.diary_tasks_tracker_api.api.dtos.CutProjectDTO;
 import danila.sukhov.diary_tasks_tracker_api.api.dtos.ProjectDTO;
 import danila.sukhov.diary_tasks_tracker_api.store.entities.ProjectEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,14 @@ public class ProjectDTOFactory {
                         .stream()
                         .map(userDTOFactory::cutCreateUserDTO)
                         .collect(Collectors.toSet()) )
+                .build();
+    }
+
+    public CutProjectDTO createCutProjectDto(ProjectEntity projectEntity){
+        return CutProjectDTO.builder()
+                .id(projectEntity.getId())
+                .name(projectEntity.getName())
+                .createdAt(projectEntity.getCreatedAt())
                 .build();
     }
 }
